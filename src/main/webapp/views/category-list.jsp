@@ -14,36 +14,36 @@
         <a href="${pageContext.request.contextPath}/category?action=new" class="btn btn-primary mb-3">+ Thêm Category</a>
     </c:if>
 
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped align-middle">
         <thead class="table-dark">
         <tr>
             <th>ID</th>
             <th>Tên</th>
             <th>Mô tả</th>
+            <th>Ảnh</th>
             <c:if test="${sessionScope.account.role == 'ADMIN'}">
                 <th>Hành động</th>
             </c:if>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="c" items="${list}">
-            <tr>
-                <td>${c.id}</td>
-                <td>${c.name}</td>
-                <td>${c.description}</td>
-                <c:if test="${sessionScope.account.role == 'ADMIN'}">
-                    <td>
-                        <a class="btn btn-sm btn-warning" href="${pageContext.request.contextPath}/category?action=edit&id=${c.id}">Sửa</a>
-                        <a class="btn btn-sm btn-danger" href="${pageContext.request.contextPath}/category?action=delete&id=${c.id}"
-                           onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
-                    </td>
-                </c:if>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-
-    <a class="btn btn-secondary" href="${pageContext.request.contextPath}/waiting">Quay lại</a>
-</div>
-</body>
-</html>
+       <c:forEach var="c" items="${list}">
+    <tr>
+        <td>${c.id}</td>
+        <td>${c.name}</td>
+        <td>${c.description}</td>
+        <td>
+            <c:if test="${not empty c.image}">
+                <img src="${pageContext.request.contextPath}/${c.image}" width="100" class="img-thumbnail"/>
+            </c:if>
+        </td>
+        <c:if test="${sessionScope.account.role == 'ADMIN'}">
+            <td>
+                <a class="btn btn-sm btn-warning"
+                   href="${pageContext.request.contextPath}/category?action=edit&id=${c.id}">Sửa</a>
+                <a class="btn btn-sm btn-danger"
+                   href="${pageContext.request.contextPath}/category?action=delete&id=${c.id}">Xóa</a>
+            </td>
+        </c:if>
+    </tr>
+</c:forEach>

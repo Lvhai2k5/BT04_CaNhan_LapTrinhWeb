@@ -6,12 +6,16 @@ import vn.iotstar.service.CategoryService;
 import vn.iotstar.service.CategoryServiceImpl;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
 
 @WebServlet("/category")
+@MultipartConfig
 public class CategoryController extends HttpServlet {
+    public static final long serialVersionUID=1L;
     private CategoryService service = new CategoryServiceImpl();
 
     @Override
@@ -40,7 +44,6 @@ public class CategoryController extends HttpServlet {
                 }
             }
         } else if ("STAFF".equals(u.getRole())) {
-            // Staff chỉ xem danh sách
             req.setAttribute("list", service.findAll());
             req.getRequestDispatcher("/views/category-list.jsp").forward(req, resp);
         } else {
@@ -61,7 +64,22 @@ public class CategoryController extends HttpServlet {
         String name = req.getParameter("name");
         String desc = req.getParameter("description");
 
-        Category c = new Category(name, desc);
+        // Lấy file upload
+        Part filePart = req.getPart("image");
+        String fileName = null;
+        if (filePart != null && filePart.getSize() > 0) {
+            fileName = System.currentTimeMillis() + "_" + filePart.getSubmittedFileName();
+            String uploadPath = getServletContext().getRealPath("/uploads");
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) uploadDir.mkdir();
+            filePart.write(uploadPath + File.separator + fileName);
+        }
+
+        Category c = new Category();
+        c.setName(name);
+        c.setDescription(desc);
+        if (fileName != null) c.setImage("uploads/" + fileName);
+
         if (idStr != null && !idStr.isEmpty()) {
             c.setId(Integer.parseInt(idStr));
             service.update(c);

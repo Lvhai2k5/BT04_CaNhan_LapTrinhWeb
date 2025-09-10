@@ -8,6 +8,7 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/logout")
 public class LogoutController extends HttpServlet {
+	public static final long serialVersionUID=1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

@@ -11,6 +11,7 @@ import java.io.IOException;
 
 @WebServlet("/register")
 public class RegisterController extends HttpServlet {
+	public static final long serialVersionUID=1L;
     private UserService userService = new UserServiceImpl();
 
     @Override

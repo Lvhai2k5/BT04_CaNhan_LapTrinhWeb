@@ -9,6 +9,7 @@ import java.io.IOException;
 
 @WebServlet("/waiting")
 public class WaitingController extends HttpServlet {
+	public static final long serialVersionUID=1L;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
